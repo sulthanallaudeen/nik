@@ -1,0 +1,18 @@
+LOCAL DUMMY PHONE — NO AIRTEL CONNECTION REQUIRED
+
+1. Install Node.js 24 or newer.
+2. Open this nikhand-crm folder in CMD.
+3. Run npm.cmd install
+4. Run npm.cmd start
+5. Open http://localhost:3100/#/demo-phone
+6. Choose Owner. Username: owner  Password: Owner@12345
+7. Click Load Dummy Setup once.
+8. Choose your own dummy DID.
+9. Test Demo Outgoing Call -> Simulate Customer Answer -> Hang Up.
+10. Test Simulate Incoming Call -> Answer or Reject.
+
+You can also use START-WINDOWS.bat to install/build/start.
+Each user has a dummy extension and DID. Calls and history are saved in data/crm.sqlite.
+Browser + virtual mobile indicators are only simulations. No physical phone rings, microphone is used or Airtel charge occurs.
+
+For existing data: stop the old CRM, back up its data folder, copy that data folder into this edition, and start here. Do not overwrite your existing database with the supplied demo database.

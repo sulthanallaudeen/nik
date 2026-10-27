@@ -1,0 +1,25 @@
+-- SQLite schema. Run npm.cmd run db:init for migrations and initial accounts.
+PRAGMA foreign_keys=ON;
+CREATE TABLE activities(id INTEGER PRIMARY KEY,leadId INTEGER REFERENCES leads(id) ON DELETE CASCADE,userId INTEGER REFERENCES users(id),type TEXT,subtype TEXT,disposition TEXT,notes TEXT,followup TEXT,created TEXT, service TEXT DEFAULT '', project TEXT DEFAULT '', location TEXT DEFAULT '', budget TEXT DEFAULT '', propertyType TEXT DEFAULT '');
+CREATE TABLE airtel_calls(id INTEGER PRIMARY KEY,logId INTEGER REFERENCES calls(id),userId INTEGER REFERENCES users(id),leadId INTEGER REFERENCES leads(id),mode TEXT NOT NULL,direction TEXT NOT NULL,sessionId TEXT UNIQUE,correlationId TEXT UNIQUE,agent TEXT,customer TEXT,status TEXT,created TEXT,answered TEXT,ended TEXT,duration INTEGER DEFAULT 0,participantState TEXT DEFAULT 'waiting',lastError TEXT DEFAULT '');
+CREATE TABLE airtel_events(eventKey TEXT PRIMARY KEY,sessionId TEXT,received TEXT,payload TEXT);
+CREATE TABLE audit(id INTEGER PRIMARY KEY,userId INTEGER,action TEXT,created TEXT);
+CREATE TABLE calls(id INTEGER PRIMARY KEY,leadId INTEGER REFERENCES leads(id) ON DELETE SET NULL,userId INTEGER REFERENCES users(id),direction TEXT,status TEXT,duration INTEGER DEFAULT 0,recording TEXT DEFAULT '',created TEXT, campaignId INTEGER);
+CREATE TABLE campaign_audio(campaignId INTEGER PRIMARY KEY REFERENCES records(id) ON DELETE CASCADE,name TEXT,mime TEXT,data BLOB);
+CREATE TABLE campaign_leads(campaignId INTEGER REFERENCES records(id) ON DELETE CASCADE,leadId INTEGER REFERENCES leads(id) ON DELETE CASCADE,PRIMARY KEY(campaignId,leadId));
+CREATE TABLE campaign_replies(campaignId INTEGER REFERENCES records(id) ON DELETE CASCADE,userId INTEGER REFERENCES users(id),response TEXT,created TEXT,PRIMARY KEY(campaignId,userId));
+CREATE TABLE demo_phone_calls(id INTEGER PRIMARY KEY,userId INTEGER REFERENCES users(id),leadId INTEGER REFERENCES leads(id),didId INTEGER REFERENCES records(id),callLogId INTEGER REFERENCES calls(id),direction TEXT,peer TEXT,status TEXT,created TEXT,answered TEXT,ended TEXT,duration INTEGER DEFAULT 0,muted INTEGER DEFAULT 0,held INTEGER DEFAULT 0);
+CREATE TABLE download_logs(id INTEGER PRIMARY KEY,userId INTEGER REFERENCES users(id),module TEXT,rows INTEGER,created TEXT);
+CREATE TABLE group_members(groupId INTEGER REFERENCES records(id) ON DELETE CASCADE,userId INTEGER REFERENCES users(id),PRIMARY KEY(groupId,userId));
+CREATE TABLE import_batches(id INTEGER PRIMARY KEY,kind TEXT,campaignId INTEGER REFERENCES records(id),fileName TEXT,userId INTEGER REFERENCES users(id),created TEXT,createdCount INTEGER,linkedCount INTEGER,skippedCount INTEGER);
+CREATE TABLE leads(id INTEGER PRIMARY KEY,name TEXT NOT NULL,mobile TEXT NOT NULL,email TEXT DEFAULT '',address TEXT DEFAULT '',source TEXT DEFAULT '',status TEXT DEFAULT 'New',ownerId INTEGER REFERENCES users(id),created TEXT NOT NULL, altMobile TEXT DEFAULT '', hiddenSource TEXT DEFAULT '', latestServices TEXT DEFAULT '', deletedAt TEXT DEFAULT '', deletedBy INTEGER, project TEXT DEFAULT '', location TEXT DEFAULT '', budget TEXT DEFAULT '', propertyType TEXT DEFAULT '', company TEXT DEFAULT '', area TEXT DEFAULT '', city TEXT DEFAULT '', pincode TEXT DEFAULT '', heat TEXT DEFAULT '', lastCallType TEXT DEFAULT '', lastSubCallType TEXT DEFAULT '', importedFollowup TEXT DEFAULT '');
+CREATE TABLE records(id INTEGER PRIMARY KEY,kind TEXT NOT NULL,name TEXT NOT NULL,description TEXT DEFAULT '',status TEXT DEFAULT 'Draft',team TEXT DEFAULT '',created TEXT, targetGroup INTEGER, ownerId INTEGER, meta TEXT DEFAULT '{}', clientId INTEGER REFERENCES records(id) ON DELETE RESTRICT);
+CREATE TABLE sessions(token TEXT PRIMARY KEY,userId INTEGER REFERENCES users(id),expires INTEGER);
+CREATE TABLE settings(id INTEGER PRIMARY KEY CHECK(id=1),value TEXT);
+CREATE TABLE user_logs(id INTEGER PRIMARY KEY,userId INTEGER REFERENCES users(id),session TEXT,status TEXT,started TEXT,ended TEXT,device TEXT,ip TEXT);
+CREATE TABLE user_preferences(userId INTEGER PRIMARY KEY REFERENCES users(id),status TEXT DEFAULT 'Online',layout TEXT DEFAULT 'vertical',updated TEXT);
+CREATE TABLE users(id INTEGER PRIMARY KEY,name TEXT NOT NULL,username TEXT UNIQUE NOT NULL,password TEXT NOT NULL,role TEXT NOT NULL CHECK(role IN ('user','tl','owner')),team TEXT NOT NULL,active INTEGER DEFAULT 1, email TEXT DEFAULT '', extension TEXT DEFAULT '', callingType TEXT DEFAULT 'Manual', roleProfileId INTEGER);
+CREATE TABLE voices(id INTEGER PRIMARY KEY,leadId INTEGER REFERENCES leads(id) ON DELETE CASCADE,userId INTEGER REFERENCES users(id),name TEXT,mime TEXT,data BLOB,created TEXT);
+CREATE TABLE vonage_calls(id INTEGER PRIMARY KEY,callLogId INTEGER REFERENCES calls(id),userId INTEGER REFERENCES users(id),leadId INTEGER REFERENCES leads(id),mode TEXT NOT NULL,direction TEXT NOT NULL,providerId TEXT,providerUserId TEXT,phone TEXT,status TEXT,created TEXT,answered TEXT,ended TEXT,duration INTEGER DEFAULT 0,UNIQUE(mode,providerId));
+CREATE TABLE vonage_events(eventKey TEXT PRIMARY KEY,providerId TEXT,received TEXT);
+CREATE INDEX idx_records_client ON records(clientId);

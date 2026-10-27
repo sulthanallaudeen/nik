@@ -1,0 +1,7 @@
+export const PAGE_PATHS:Record<string,string>={
+ 'Dashboard':'/analytics','Project Wise Report':'/project-wise-report','Daily QC Report':'/daily-qc-report','User Billing Report':'/user-billing-report','Activity Report':'/activity-dashboard','Hourly Performance':'/hourly-report','Talktime Report':'/talktime-report',
+ 'Demo Phone':'/demo-phone','Auto Dial':'/autodial','OBD':'/obd','Outgoing Calls':'/voice-quality/outgoing','Voice Quality':'/voice-quality',
+ 'Smart View':'/leads/smart-view','Calendar':'/leads/calendar','Leads':'/leads','Users':'/admin/users','Deleted Leads':'/admin/deleted-leads','Groups':'/admin/groups','User Logs':'/admin/user-logs','Download Logs':'/admin/download-logs','Roles & Permissions':'/admin/roles','Global Settings':'/admin/settings','Audit Log':'/admin/audit',
+ 'Locations':'/masters/location','Budget':'/masters/budget','Property Type':'/masters/property-type','Sub Call Type (Dispo)':'/masters/sub-call-type','Client':'/masters/client','Project':'/masters/project','Push Logs':'/masters/push-logs','Sources':'/masters/source','Dispositions':'/masters/disposition'
+};
+export function resolveRoute(hash:string):{page:string;leadId?:number}{const path=hash.replace(/^#/,'').replace(/\/$/,'')||'/analytics';const profile=path.match(/^\/leads\/profile\/(\d+)$/);if(profile)return {page:'Leads',leadId:Number(profile[1])};const page=Object.keys(PAGE_PATHS).find(k=>PAGE_PATHS[k]===path);return {page:page||'Dashboard'};}

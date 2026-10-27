@@ -1,0 +1,6 @@
+Name,Company,Email,Mobile Number,Alternate Number,Source,Hidden Source,Address,Area,City,Pincode
+John Doe,Tech Corp,john@example.com,9876543210,9876543211,Facebook,csv_oct_2025,123 Main Street,Downtown,New York,100001
+Jane Smith,Innovation Inc,jane@example.com,8765432109,8765432110,LinkedIn,csv_oct_2025,456 Oak Avenue,Midtown,Los Angeles,900001
+Mike Johnson,Business Solutions,mike@example.com,7654321098,7654321099,Referral,csv_oct_2025,789 Pine Road,Uptown,Chicago,600001
+Emily Davis,Growth Co,emily@example.com,6543210987,6543210988,Google Ads,csv_oct_2025,321 Elm Street,Westside,Houston,770001
+Robert Wilson,Success Ventures,robert@example.com,5432109876,5432109877,Webinar,csv_oct_2025,654 Maple Drive,Eastside,Phoenix,850001
