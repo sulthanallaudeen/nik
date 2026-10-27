@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm run build && node server/index.cjs",
     "build": "ng build",
+    "build:crm": "ng build --base-href /crm/",
     "serve": "npm start",
     "backend": "node server/index.cjs",
     "test": "node --test tests/*.test.cjs",

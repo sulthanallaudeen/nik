@@ -1,2 +1,2 @@
 const fs=require('node:fs');if(fs.existsSync(require('node:path').join(__dirname,'../.env')))process.loadEnvFile(require('node:path').join(__dirname,'../.env'));
-const path=require('node:path');const {createApp}=require('./app.cjs');const {app}=createApp(process.env.CRM_DB||path.join(__dirname,'../data/crm.sqlite'));const port=Number(process.env.PORT||3100);app.listen(port,()=>console.log(`Nikhand CRM ready: http://localhost:${port}`));
+const path=require('node:path');const {createApp}=require('./app.cjs');const {app}=createApp(process.env.CRM_DB||path.join(__dirname,'../data/crm.sqlite'));const port=Number(process.env.PORT||3100);const host=process.env.HOST||'127.0.0.1';app.listen(port,host,()=>console.log(`Nikhand CRM ready: http://${host}:${port}`));
