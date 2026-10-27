@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run build && node server/index.cjs",
+    "start": "node server/index.cjs",
     "build": "ng build",
     "build:crm": "ng build --base-href /crm/",
     "serve": "npm start",
